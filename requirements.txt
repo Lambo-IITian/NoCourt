@@ -1,0 +1,9 @@
+fastapi 
+uvicorn 
+openai 
+python-dotenv 
+reportlab 
+pydantic 
+aiofiles
+groq
+azure-communication-email

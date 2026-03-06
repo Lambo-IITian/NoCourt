@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LegalAI Resolver — AI Dispute Resolution</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    *{font-family:'Inter',sans-serif}
+    .grad{background:linear-gradient(135deg,#0F2A4A 0%,#1565C0 100%)}
+    .grad-green{background:linear-gradient(135deg,#1B5E20,#2E7D32)}
+    .grad-orange{background:linear-gradient(135deg,#E65100,#F57C00)}
+    .shadow-card{box-shadow:0 4px 24px rgba(0,0,0,0.07)}
+    .shadow-hover{transition:box-shadow .2s,transform .2s}
+    .shadow-hover:hover{box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:translateY(-1px)}
+    @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes bounceDot{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .slide-up{animation:slideUp .45s ease forwards}
+    .fade-in{animation:fadeIn .3s ease forwards}
+    .progress-fill{transition:width .7s cubic-bezier(.4,0,.2,1)}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+    .tab-active{border-bottom:3px solid #1565C0;color:#1565C0;font-weight:600}
+    .neg-claimant{background:linear-gradient(135deg,#E3F2FD,#BBDEFB)}
+    .neg-ai{background:linear-gradient(135deg,#F3E5F5,#E1BEE7)}
+    .neg-respondent{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
+    .round-card{border-left:4px solid #1565C0}
+    input[type=range]{accent-color:#1565C0}
+    .input-field{width:100%;border:2px solid #f1f5f9;border-radius:12px;padding:10px 14px;font-size:14px;outline:none;transition:border .2s}
+    .input-field:focus{border-color:#1565C0;box-shadow:0 0 0 3px rgba(21,101,192,0.1)}
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════════════ -->
+<nav class="grad text-white px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xl">
+  <div class="flex items-center gap-3 cursor-pointer" onclick="resetAll()">
+    <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-xl">⚖️</div>
+    <div>
+      <div class="font-bold text-base leading-tight">LegalAI Resolver</div>
+      <div class="text-xs text-blue-200">AI-Powered Pre-Litigation System</div>
+    </div>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="hidden md:flex items-center gap-3 text-xs text-blue-200">
+      <span>📋 Intake</span><span>→</span>
+      <span>⚖️ Research</span><span>→</span>
+      <span>📊 Analytics</span><span>→</span>
+      <span>📧 Invite</span><span>→</span>
+      <span>🤝 Negotiate</span><span>→</span>
+      <span>📄 Settle</span>
+    </div>
+    <div class="flex items-center gap-2 text-xs bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+      <div class="w-2 h-2 bg-green-400 rounded-full" style="animation:bounceDot 1.5s infinite"></div>
+      <span>4 Agents Online</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: INTAKE
+════════════════════════════════════════════════════════════ -->
+<div id="pageIntake">
+
+  <!-- HERO -->
+  <div class="grad text-white px-6 pt-12 pb-20 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:30px 30px"></div>
+    <div class="relative max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 text-xs font-bold px-4 py-1.5 rounded-full mb-5">
+        🏆 Microsoft Azure AI Competition Project
+      </div>
+      <h1 class="text-5xl font-extrabold mb-4 leading-tight">Resolve Legal Disputes<br/>Without a Courtroom</h1>
+      <p class="text-blue-200 text-lg mb-8 max-w-xl mx-auto">
+        Our multi-agent AI system analyzes your dispute, maps applicable laws, scores your win probability, invites the other party via email, and guides both sides to a fair settlement.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
+        <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full"><span class="text-green-400">✓</span> Instant Legal Research</div>
+        <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full"><span class="text-green-400">✓</span> Win Probability Scoring</div>
+        <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full"><span class="text-green-400">✓</span> Azure Email Invitations</div>
+        <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full"><span class="text-green-400">✓</span> AI-Guided Negotiation</div>
+        <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full"><span class="text-green-400">✓</span> Legal Documents Generated</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="max-w-4xl mx-auto px-4 -mt-10 pb-16">
+    <div class="bg-white rounded-2xl shadow-card p-8 slide-up">
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center text-2xl">📋</div>
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">File Your Dispute</h2>
+          <p class="text-slate-500 text-sm">Describe in plain language — AI handles all the legal structuring</p>
+        </div>
+      </div>
+
+      <!-- Example buttons -->
+      <div class="mb-5">
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Try an example</p>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="fillExample('rental')"   class="text-xs bg-blue-50   text-blue-700   border border-blue-200   px-3 py-1.5 rounded-full hover:bg-blue-100   transition font-medium">🏠 Rental Deposit</button>
+          <button onclick="fillExample('salary')"   class="text-xs bg-green-50  text-green-700  border border-green-200  px-3 py-1.5 rounded-full hover:bg-green-100  transition font-medium">💼 Unpaid Salary</button>
+          <button onclick="fillExample('consumer')" class="text-xs bg-orange-50 text-orange-700 border border-orange-200 px-3 py-1.5 rounded-full hover:bg-orange-100 transition font-medium">🛒 Consumer Fraud</button>
+          <button onclick="fillExample('contract')" class="text-xs bg-purple-50 text-purple-700 border border-purple-200 px-3 py-1.5 rounded-full hover:bg-purple-100 transition font-medium">📝 Contract Breach</button>
+        </div>
+      </div>
+
+      <!-- Dispute textarea -->
+      <textarea id="disputeInput"
+        class="w-full h-40 border-2 border-slate-100 rounded-xl p-4 text-slate-700 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+        placeholder="E.g. My landlord is refusing to return my ₹50,000 security deposit after I moved out 2 months ago in Delhi. He claims there was damage to the property but has never provided any proof or itemized list. I have move-out photos showing the apartment was in good condition..."></textarea>
+      <div class="flex justify-between mt-1.5 mb-5">
+        <div class="text-xs text-slate-400"><span id="charCount">0</span> characters · <span id="wordCount">0</span> words</div>
+      </div>
+
+      <!-- Divider -->
+      <div class="border-t border-slate-100 pt-5 mb-5">
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">Party Details</p>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Claimant Name -->
+          <div>
+            <label class="text-xs font-semibold text-slate-600 mb-1.5 block">Your Name (Claimant)</label>
+            <input id="claimantName" type="text" placeholder="Your full name" class="input-field"/>
+          </div>
+          <!-- Respondent Name -->
+          <div>
+            <label class="text-xs font-semibold text-slate-600 mb-1.5 block">Other Party's Name (Respondent)</label>
+            <input id="respondentName" type="text" placeholder="Their full name" class="input-field"/>
+          </div>
+          <!-- Claimant Email -->
+          <div>
+            <label class="text-xs font-semibold text-slate-600 mb-1.5 block">
+              Your Email <span class="text-red-400">*</span>
+            </label>
+            <input id="claimantEmail" type="email" placeholder="you@email.com" class="input-field"/>
+          </div>
+          <!-- Respondent Email -->
+          <div>
+            <label class="text-xs font-semibold text-slate-600 mb-1.5 block">
+              Other Party's Email <span class="text-red-400">*</span>
+              <span class="text-blue-500 font-normal ml-1">← invite sent here</span>
+            </label>
+            <input id="respondentEmail" type="email" placeholder="otherparty@email.com" class="input-field"/>
+          </div>
+        </div>
+
+        <!-- Azure badge -->
+        <div class="mt-4 flex items-center gap-2 text-xs text-slate-500 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
+          <span class="text-lg">📧</span>
+          <span>The other party will receive a <b class="text-blue-700">real email via Azure Communication Services</b> with a unique secure link to view the case and submit their offer.</span>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex justify-end">
+        <button onclick="startAnalysis()"
+          class="grad text-white px-8 py-3.5 rounded-xl font-bold hover:opacity-90 transition flex items-center gap-2 shadow-lg shadow-blue-200 text-sm">
+          Analyze My Dispute &amp; Send Invite <span class="text-base">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="mt-10">
+      <h3 class="text-center text-slate-400 text-xs font-semibold uppercase tracking-widest mb-5">How It Works — Multi-Agent AI Pipeline</h3>
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl shadow-card p-5 text-center shadow-hover">
+          <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">📋</div>
+          <div class="font-semibold text-slate-800 text-sm mb-1">Case Intake</div>
+          <div class="text-xs text-slate-400 leading-relaxed">AI structures your dispute into a formal case object</div>
+          <div class="mt-2 text-xs text-blue-500 font-medium">Agent 1</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-5 text-center shadow-hover">
+          <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">⚖️</div>
+          <div class="font-semibold text-slate-800 text-sm mb-1">Legal Research</div>
+          <div class="text-xs text-slate-400 leading-relaxed">Relevant laws & statutes mapped to your case</div>
+          <div class="mt-2 text-xs text-purple-500 font-medium">Agent 2</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-5 text-center shadow-hover">
+          <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">📊</div>
+          <div class="font-semibold text-slate-800 text-sm mb-1">Analytics</div>
+          <div class="text-xs text-slate-400 leading-relaxed">Win probability, cost & timeline estimated</div>
+          <div class="mt-2 text-xs text-orange-500 font-medium">Agent 3</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-5 text-center shadow-hover">
+          <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">🤝</div>
+          <div class="font-semibold text-slate-800 text-sm mb-1">Negotiation</div>
+          <div class="text-xs text-slate-400 leading-relaxed">AI mediates real settlement between both parties</div>
+          <div class="mt-2 text-xs text-green-500 font-medium">Agent 4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: LOADING
+════════════════════════════════════════════════════════════ -->
+<div id="pageLoading" class="hidden min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white rounded-2xl shadow-card p-12 max-w-md w-full text-center">
+    <div class="text-6xl mb-4" style="animation:bounceDot 1s infinite;display:inline-block">⚖️</div>
+    <h2 class="text-2xl font-bold text-slate-800 mb-2">Analyzing Your Case</h2>
+    <p class="text-slate-500 text-sm mb-8">4 specialized AI agents are working on your dispute</p>
+    <div class="space-y-3 text-left mb-8">
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 transition-all" id="ag1">
+        <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-base flex-shrink-0">📋</div>
+        <div class="flex-1"><div class="text-sm font-medium text-slate-700">Intake Agent</div><div class="text-xs text-slate-400">Structuring your dispute...</div></div>
+        <div id="ag1s" class="text-slate-300 text-lg">○</div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 transition-all" id="ag2">
+        <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-base flex-shrink-0">⚖️</div>
+        <div class="flex-1"><div class="text-sm font-medium text-slate-700">Legal Research Agent</div><div class="text-xs text-slate-400">Mapping applicable laws...</div></div>
+        <div id="ag2s" class="text-slate-300 text-lg">○</div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 transition-all" id="ag3">
+        <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-base flex-shrink-0">📊</div>
+        <div class="flex-1"><div class="text-sm font-medium text-slate-700">Analytics Agent</div><div class="text-xs text-slate-400">Calculating win probability...</div></div>
+        <div id="ag3s" class="text-slate-300 text-lg">○</div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 transition-all" id="ag4">
+        <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-base flex-shrink-0">📄</div>
+        <div class="flex-1"><div class="text-sm font-medium text-slate-700">Document Agent</div><div class="text-xs text-slate-400">Drafting demand letter...</div></div>
+        <div id="ag4s" class="text-slate-300 text-lg">○</div>
+      </div>
+    </div>
+    <div class="bg-slate-100 rounded-full h-2 mb-2">
+      <div id="loadProg" class="grad h-2 rounded-full progress-fill" style="width:0%"></div>
+    </div>
+    <div id="loadText" class="text-xs text-slate-400 mt-1">Initializing agents...</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: RESULTS
+════════════════════════════════════════════════════════════ -->
+<div id="pageResults" class="hidden">
+  <div class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Top bar -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Case Analysis Complete</h2>
+        <p id="caseIdTxt" class="text-sm text-slate-400 mt-0.5"></p>
+      </div>
+      <button onclick="resetAll()" class="text-sm border border-slate-200 text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+        ← New Case
+      </button>
+    </div>
+
+    <!-- TABS -->
+    <div class="flex border-b border-slate-200 mb-6 gap-6">
+      <button onclick="switchTab('analysis')"     id="tabAnalysis"     class="pb-3 text-sm tab-active">📊 Case Analysis</button>
+      <button onclick="switchTab('negotiation')"  id="tabNegotiation"  class="pb-3 text-sm text-slate-500 hover:text-slate-700">🤝 AI Negotiation</button>
+      <button onclick="switchTab('documents')"    id="tabDocuments"    class="pb-3 text-sm text-slate-500 hover:text-slate-700">📄 Documents</button>
+    </div>
+
+    <!-- ─── TAB: ANALYSIS ──────────────────────────────────── -->
+    <div id="tabContentAnalysis">
+
+      <!-- Hero analysis card -->
+      <div class="grad text-white rounded-2xl p-7 mb-5 shadow-card slide-up">
+        <div class="flex items-start gap-5">
+          <div class="flex-1">
+            <div id="typeTag" class="inline-block bg-white/20 text-xs font-bold px-3 py-1 rounded-full mb-3"></div>
+            <p id="heroSummary" class="text-xl font-semibold leading-snug mb-2"></p>
+            <p id="heroLegal"   class="text-blue-200 text-sm leading-relaxed"></p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <div id="heroStanding"     class="bg-white/10 text-xs px-3 py-1.5 rounded-full font-medium"></div>
+              <div id="heroRec"          class="bg-white/10 text-xs px-3 py-1.5 rounded-full font-medium"></div>
+              <div id="heroJurisdiction" class="bg-white/10 text-xs px-3 py-1.5 rounded-full font-medium"></div>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <div class="w-28 h-28 bg-white/10 rounded-2xl border-2 border-white/30 flex flex-col items-center justify-center">
+              <div id="winPct" class="text-4xl font-extrabold"></div>
+              <div class="text-xs text-blue-200 mt-1">Win Chance</div>
+              <div id="confLevel" class="text-xs text-blue-300 mt-0.5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVITE BANNER -->
+      <div id="inviteBanner" class="bg-white border-2 border-blue-200 rounded-2xl p-5 mb-5 flex items-center justify-between shadow-card">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-2xl">📧</div>
+          <div>
+            <div class="font-bold text-slate-800">Step 2 — Invite the Other Party</div>
+            <div id="inviteEmailTxt" class="text-sm text-slate-500 mt-0.5"></div>
+            <div class="text-xs text-blue-600 mt-1">Powered by Azure Communication Services</div>
+          </div>
+        </div>
+        <button onclick="sendInvite()" id="inviteBtn"
+          class="grad text-white px-6 py-2.5 rounded-xl font-semibold hover:opacity-90 transition text-sm shadow flex-shrink-0">
+          📧 Send Email Invite
+        </button>
+      </div>
+      <div id="inviteSentBanner" class="hidden bg-green-50 border border-green-200 rounded-2xl p-4 mb-5 flex items-center gap-3">
+        <span class="text-3xl">✅</span>
+        <div>
+          <div class="font-bold text-green-800">Invite Sent via Azure!</div>
+          <div id="inviteSentTxt" class="text-sm text-green-600 mt-0.5"></div>
+          <div class="text-xs text-green-500 mt-1">Ask the other party to check their inbox and submit their offer, then come back to the Negotiation tab.</div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-4 gap-4 mb-5">
+        <div class="bg-white rounded-xl p-4 shadow-card text-center shadow-hover">
+          <div class="text-xs text-slate-400 font-semibold uppercase mb-1">Claim Amount</div>
+          <div id="statClaim"     class="text-xl font-bold text-slate-800"></div>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-card text-center shadow-hover">
+          <div class="text-xs text-slate-400 font-semibold uppercase mb-1">Negotiation Est.</div>
+          <div id="statNegDays"   class="text-xl font-bold text-slate-800"></div>
+          <div class="text-xs text-slate-400">days</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-card text-center shadow-hover">
+          <div class="text-xs text-slate-400 font-semibold uppercase mb-1">Court Timeline</div>
+          <div id="statCourtTime" class="text-xl font-bold text-slate-800"></div>
+          <div class="text-xs text-slate-400">months</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-card text-center shadow-hover">
+          <div class="text-xs text-slate-400 font-semibold uppercase mb-1">Court Worth It?</div>
+          <div id="statWorth"     class="text-xl font-bold"></div>
+        </div>
+      </div>
+
+      <!-- Laws + Analytics -->
+      <div class="grid grid-cols-2 gap-5 mb-5">
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><span>⚖️</span> Applicable Laws</h3>
+          <div id="lawsList" class="space-y-3"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><span>📊</span> Case Analytics</h3>
+          <div class="mb-4">
+            <div class="flex justify-between text-xs text-slate-500 mb-1.5">
+              <span>Win Probability</span>
+              <span id="winBarPct" class="font-semibold text-blue-600"></span>
+            </div>
+            <div class="bg-slate-100 rounded-full h-3">
+              <div id="winBar" class="grad h-3 rounded-full progress-fill" style="width:0%"></div>
+            </div>
+          </div>
+          <div id="analyticsRows" class="space-y-2 mb-4"></div>
+          <div id="settlementBox"></div>
+        </div>
+      </div>
+
+      <!-- Strengths / Risks / Rights -->
+      <div class="grid grid-cols-3 gap-4 mb-5">
+        <div class="bg-white rounded-2xl shadow-card p-5">
+          <h3 class="font-bold text-slate-700 text-sm mb-3">💪 Strengths</h3>
+          <div id="strengthsList" class="space-y-2"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-5">
+          <h3 class="font-bold text-slate-700 text-sm mb-3">⚠️ Risk Factors</h3>
+          <div id="risksList" class="space-y-2"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-5">
+          <h3 class="font-bold text-slate-700 text-sm mb-3">🛡️ Your Rights</h3>
+          <div id="rightsList" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="grad rounded-2xl p-6 text-white text-center shadow-card">
+        <div class="text-3xl mb-3">🤝</div>
+        <h3 class="text-xl font-bold mb-2">Ready to Negotiate?</h3>
+        <p class="text-blue-200 text-sm mb-4 max-w-md mx-auto">Once the other party submits their offer via the email link, come here to start AI-guided mediation.</p>
+        <button onclick="switchTab('negotiation')" class="bg-white text-blue-700 font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition shadow">
+          Go to Negotiation Tab →
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── TAB: NEGOTIATION ──────────────────────────────── -->
+    <div id="tabContentNegotiation" class="hidden">
+
+      <!-- Intro / form -->
+      <div id="negIntro" class="bg-white rounded-2xl shadow-card p-8 mb-5">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-11 h-11 bg-purple-50 rounded-xl flex items-center justify-center text-2xl">🤝</div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">AI-Guided Negotiation</h3>
+            <p class="text-slate-500 text-sm">The AI mediator evaluates both real offers and proposes a fair settlement. Up to 3 rounds.</p>
+          </div>
+        </div>
+
+        <!-- Parties row -->
+        <div class="flex justify-center gap-8 my-6">
+          <div class="text-center">
+            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-2xl mx-auto mb-2">👤</div>
+            <div class="text-sm font-semibold text-slate-700" id="negClaimantName">You (Claimant)</div>
+            <div class="text-xs text-slate-400">Filing the claim</div>
+          </div>
+          <div class="text-center self-center">
+            <div class="text-3xl text-slate-200">⚡</div>
+            <div class="text-xs text-slate-400 font-bold">VS</div>
+          </div>
+          <div class="text-center">
+            <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mx-auto mb-2">🏢</div>
+            <div class="text-sm font-semibold text-slate-700" id="negRespondentName">Respondent</div>
+            <div class="text-xs text-slate-400">Other party</div>
+          </div>
+        </div>
+
+        <!-- Respondent status indicator -->
+        <div id="respondentStatusBox" class="mb-5 rounded-xl p-4 border text-sm flex items-center gap-3">
+          <span id="respondentStatusIcon" class="text-2xl">⏳</span>
+          <div>
+            <div id="respondentStatusTitle" class="font-semibold"></div>
+            <div id="respondentStatusSub"   class="text-xs mt-0.5 opacity-75"></div>
+          </div>
+        </div>
+
+        <!-- Your offer slider -->
+        <div class="max-w-lg mx-auto mb-5">
+          <div class="bg-blue-50 rounded-xl p-4">
+            <div class="flex justify-between mb-2">
+              <label class="text-sm font-semibold text-blue-800">Your Offer (minimum you'll accept)</label>
+              <span id="claimantOfferDisplay" class="text-sm font-bold text-blue-700"></span>
+            </div>
+            <input type="range" id="claimantSlider" class="w-full" oninput="updateSliders()"/>
+            <div class="flex justify-between text-xs text-blue-400 mt-1">
+              <span id="cSliderMin"></span><span id="cSliderMax"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Respondent's offer display (read only — from their portal) -->
+        <div id="respondentOfferDisplay" class="hidden max-w-lg mx-auto mb-5">
+          <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="text-sm font-semibold text-green-800">Respondent's Submitted Offer</div>
+                <div class="text-xs text-green-600 mt-0.5">Received from their portal</div>
+              </div>
+              <div id="respondentOfferAmt" class="text-xl font-extrabold text-green-700"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="max-w-lg mx-auto">
+          <button onclick="submitNegotiation()" id="negBtn"
+            class="w-full grad text-white py-3.5 rounded-xl font-bold hover:opacity-90 transition shadow-lg text-sm">
+            Submit to AI Mediator →
+          </button>
+          <p id="negBtnNote" class="text-xs text-slate-400 text-center mt-2">The AI mediator will evaluate both offers and propose a fair settlement</p>
+        </div>
+      </div>
+
+      <!-- Round history -->
+      <div id="negHistory" class="space-y-4 mb-5"></div>
+
+      <!-- Round dots -->
+      <div id="roundCounter" class="hidden bg-white rounded-xl shadow-card px-6 py-3 mb-4 flex items-center justify-between">
+        <span class="text-sm text-slate-500 font-medium">Negotiation Progress</span>
+        <div class="flex gap-2" id="roundDots"></div>
+      </div>
+
+      <!-- Settled banner -->
+      <div id="settledBanner" class="hidden grad-green text-white rounded-2xl p-8 text-center shadow-card">
+        <div class="text-5xl mb-4">🎉</div>
+        <h3 class="text-2xl font-bold mb-2">Case Settled!</h3>
+        <p class="text-green-100 text-sm mb-1">Both parties have reached a fair resolution through AI mediation</p>
+        <p id="settledAmountTxt" class="text-3xl font-extrabold mt-3 mb-2"></p>
+        <p class="text-green-200 text-xs mb-5">Both parties will receive the settlement agreement via email automatically</p>
+        <button onclick="generateSettlement()" id="settlementBtn"
+          class="bg-white text-green-700 font-bold px-8 py-3 rounded-xl hover:bg-green-50 transition shadow">
+          📄 Generate &amp; Email Settlement Agreement
+        </button>
+      </div>
+
+      <!-- Escalation banner -->
+      <div id="escalateBanner" class="hidden grad-orange text-white rounded-2xl p-8 text-center shadow-card">
+        <div class="text-5xl mb-4">⚠️</div>
+        <h3 class="text-2xl font-bold mb-2">Negotiation Unsuccessful</h3>
+        <p class="text-orange-100 text-sm mb-4">After 3 rounds, the parties could not reach agreement.<br/>A court-ready case file has been prepared.</p>
+        <button onclick="switchTab('documents')"
+          class="bg-white text-orange-700 font-bold px-8 py-3 rounded-xl hover:bg-orange-50 transition shadow">
+          📋 View Court-Ready Documents →
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── TAB: DOCUMENTS ────────────────────────────────── -->
+    <div id="tabContentDocuments" class="hidden">
+      <div class="space-y-4">
+
+        <!-- Demand letter -->
+        <div class="bg-white rounded-2xl shadow-card p-6 shadow-hover">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">📄</div>
+            <div class="flex-1">
+              <h3 class="font-bold text-slate-800 text-lg">Legal Demand Notice</h3>
+              <p class="text-slate-500 text-sm">Professionally drafted demand letter citing applicable laws, stating your legal position and demanding response within 7 days</p>
+              <div class="flex gap-2 mt-2 flex-wrap">
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">✓ Laws Referenced</span>
+                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">✓ AI Drafted</span>
+                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">✓ Jurisdiction Specific</span>
+              </div>
+            </div>
+            <button onclick="downloadDemand()"
+              class="grad text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition shadow flex-shrink-0 text-sm">
+              ⬇ Download PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Settlement (shown after settlement) -->
+        <div id="settlementDocCard" class="hidden bg-white rounded-2xl shadow-card p-6 shadow-hover">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">✅</div>
+            <div class="flex-1">
+              <h3 class="font-bold text-slate-800 text-lg">Settlement Agreement</h3>
+              <p class="text-slate-500 text-sm">Legally sound settlement agreement with payment terms (7-day deadline), confidentiality clause, and full &amp; final settlement release</p>
+              <div class="flex gap-2 mt-2 flex-wrap">
+                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">✓ Fully Settled</span>
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">✓ Both Parties</span>
+                <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-medium">✓ Emailed via Azure</span>
+              </div>
+            </div>
+            <button onclick="downloadSettlement()"
+              class="grad-green text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition shadow flex-shrink-0 text-sm">
+              ⬇ Download PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Court file -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">📋</div>
+            <div class="flex-1">
+              <h3 class="font-bold text-slate-800 text-lg">Court-Ready Case File</h3>
+              <p class="text-slate-500 text-sm">Complete case summary, legal arguments, evidence checklist, and filing instructions for small claims court — generated if negotiation fails</p>
+              <div class="flex gap-2 mt-2">
+                <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">Available after failed negotiation</span>
+              </div>
+            </div>
+            <div class="text-slate-300 text-sm px-4 flex-shrink-0 text-center">After<br/>negotiation</div>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+          <p class="text-amber-800 text-xs">
+            ⚠️ <strong>Legal Disclaimer:</strong> Documents generated by this AI system are for informational purposes only and do not constitute legal advice.
+            Consult a licensed attorney before taking formal legal action.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════════ -->
+<script>
+const API = 'http://localhost:8000';
+
+let state = {
+  caseId:        null,
+  caseData:      null,
+  legalData:     null,
+  analyticsData: null,
+  history:       [],
+  roundsUsed:    0,
+  settled:       false,
+  settledAmount: null,
+  respondentOffer: null,
+};
+
+const examples = {
+  rental:   "My landlord is refusing to return my security deposit of ₹50,000 after I moved out 2 months ago in Delhi. He claims there was damage to the property but has never provided any proof or itemized list of damages. I have photos showing the property was in perfect condition when I left and all my rent receipts.",
+  salary:   "My employer has not paid my salary for the last 3 months. I work as a software developer in Bangalore with a monthly salary of ₹75,000. I have resigned and served my full notice period but they keep delaying payment with excuses. I have my salary slips, employment contract and email acknowledgements as proof.",
+  consumer: "I purchased a laptop worth ₹85,000 from an online store 3 weeks ago. The laptop arrived with a cracked screen and faulty keyboard. The seller is refusing to replace it or refund my money, claiming I caused the damage. I have an unboxing video showing the damage was present on arrival from the sealed box.",
+  contract: "I hired a contractor to renovate my office for ₹2,00,000 and paid 60% advance. He completed only 30% of the work and has stopped responding to all calls and messages for 3 weeks. The incomplete work is causing business disruption. I have the signed contract, payment receipts and photos of the incomplete work."
+};
+
+// ── Helpers ────────────────────────────────────────────────────
+function showPage(id) {
+  ['pageIntake','pageLoading','pageResults'].forEach(p =>
+    document.getElementById(p).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function switchTab(tab) {
+  ['Analysis','Negotiation','Documents'].forEach(t => {
+    document.getElementById('tabContent'+t).classList.add('hidden');
+    const btn = document.getElementById('tab'+t);
+    btn.classList.remove('tab-active');
+    btn.classList.add('text-slate-500');
+  });
+  const key = tab.charAt(0).toUpperCase() + tab.slice(1);
+  document.getElementById('tabContent'+key).classList.remove('hidden');
+  const activeBtn = document.getElementById('tab'+key);
+  activeBtn.classList.add('tab-active');
+  activeBtn.classList.remove('text-slate-500');
+}
+
+function resetAll() {
+  state = { caseId:null, caseData:null, legalData:null, analyticsData:null,
+            history:[], roundsUsed:0, settled:false, settledAmount:null, respondentOffer:null };
+  document.getElementById('disputeInput').value   = '';
+  document.getElementById('claimantName').value   = '';
+  document.getElementById('respondentName').value = '';
+  document.getElementById('claimantEmail').value  = '';
+  document.getElementById('respondentEmail').value= '';
+  document.getElementById('charCount').textContent = '0';
+  document.getElementById('wordCount').textContent = '0';
+  document.getElementById('negHistory').innerHTML = '';
+  document.getElementById('settledBanner').classList.add('hidden');
+  document.getElementById('escalateBanner').classList.add('hidden');
+  document.getElementById('settlementDocCard').classList.add('hidden');
+  document.getElementById('inviteBanner').classList.remove('hidden');
+  document.getElementById('inviteSentBanner').classList.add('hidden');
+  showPage('pageIntake');
+}
+
+function fillExample(type) {
+  const el = document.getElementById('disputeInput');
+  el.value = examples[type];
+  el.dispatchEvent(new Event('input'));
+  el.focus();
+}
+
+// Character / word counter
+document.getElementById('disputeInput').addEventListener('input', function() {
+  const words = this.value.trim() ? this.value.trim().split(/\s+/).length : 0;
+  document.getElementById('charCount').textContent = this.value.length;
+  document.getElementById('wordCount').textContent = words;
+});
+
+// ── Loading animation ─────────────────────────────────────────
+function animateLoading() {
+  const steps = [
+    { id:'ag1', sid:'ag1s', pct:25,  text:'Intake Agent: Structuring your dispute...' },
+    { id:'ag2', sid:'ag2s', pct:50,  text:'Legal Research Agent: Searching applicable laws...' },
+    { id:'ag3', sid:'ag3s', pct:75,  text:'Analytics Agent: Calculating probabilities...' },
+    { id:'ag4', sid:'ag4s', pct:92,  text:'Document Agent: Drafting your demand letter...' },
+  ];
+  const delays = [300, 2200, 4500, 6800];
+  steps.forEach(({id, sid, pct, text}, i) => {
+    setTimeout(() => {
+      const row = document.getElementById(id);
+      row.classList.add('bg-blue-50','border','border-blue-100');
+      row.classList.remove('bg-slate-50');
+      document.getElementById(sid).innerHTML = '<span style="color:#1565C0;animation:spin 1s linear infinite;display:inline-block">◌</span>';
+      document.getElementById('loadProg').style.width = pct + '%';
+      document.getElementById('loadText').textContent = text;
+    }, delays[i]);
+  });
+}
+
+// ── ANALYZE ───────────────────────────────────────────────────
+async function startAnalysis() {
+  const text            = document.getElementById('disputeInput').value.trim();
+  const claimantEmail   = document.getElementById('claimantEmail').value.trim();
+  const respondentEmail = document.getElementById('respondentEmail').value.trim();
+  const claimantName    = document.getElementById('claimantName').value.trim();
+  const respondentName  = document.getElementById('respondentName').value.trim();
+
+  if (text.length < 20)  { alert('Please describe your dispute in more detail (at least a few sentences).'); return; }
+  if (!claimantEmail)    { alert('Please enter your email address.'); return; }
+  if (!respondentEmail)  { alert("Please enter the other party's email address."); return; }
+
+  showPage('pageLoading');
+  animateLoading();
+
+  try {
+    const res = await fetch(`${API}/api/analyze`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        dispute_text:     text,
+        claimant_email:   claimantEmail,
+        respondent_email: respondentEmail,
+        claimant_name:    claimantName,
+        respondent_name:  respondentName,
+      })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || JSON.stringify(e)); }
+    const data = await res.json();
+
+    state.caseId        = data.case_id;
+    state.caseData      = data.case;
+    state.legalData     = data.legal;
+    state.analyticsData = data.analytics;
+
+    // Mark all agents done
+    document.getElementById('loadProg').style.width = '100%';
+    document.getElementById('loadText').textContent = 'Analysis complete!';
+    ['ag1s','ag2s','ag3s','ag4s'].forEach(id =>
+      document.getElementById(id).innerHTML = '<span style="color:#2E7D32;font-size:18px">✓</span>');
+
+    setTimeout(() => {
+      showPage('pageResults');
+      renderResults(data);
+      switchTab('analysis');
+    }, 700);
+
+  } catch(err) {
+    showPage('pageIntake');
+    alert('Error: ' + err.message);
+  }
+}
+
+// ── SEND INVITE ───────────────────────────────────────────────
+async function sendInvite() {
+  const btn = document.getElementById('inviteBtn');
+  btn.textContent = '⏳ Sending via Azure...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/send-invite`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ case_id: state.caseId })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail); }
+
+    const respondentEmail = document.getElementById('respondentEmail').value;
+    document.getElementById('inviteBanner').classList.add('hidden');
+    document.getElementById('inviteSentBanner').classList.remove('hidden');
+    document.getElementById('inviteSentTxt').textContent =
+      `Email sent to ${respondentEmail} — they can now view the case and submit their offer.`;
+
+    // Update negotiation tab status
+    setRespondentStatus('waiting');
+
+  } catch(err) {
+    btn.textContent = '📧 Send Email Invite';
+    btn.disabled = false;
+    alert('Failed to send invite: ' + err.message);
+  }
+}
+
+// ── RENDER RESULTS ────────────────────────────────────────────
+function renderResults(data) {
+  const { case: c, legal: l, analytics: a, case_id } = data;
+  const sym = c.currency === 'INR' ? '₹' : c.currency === 'USD' ? '$' : (c.currency || '') + ' ';
+  window._sym = sym;
+
+  document.getElementById('caseIdTxt').textContent =
+    `Case ID: ${case_id}  ·  ${new Date().toLocaleDateString('en-IN', { dateStyle: 'medium' })}`;
+
+  // Invite banner
+  const respondentEmail = document.getElementById('respondentEmail').value;
+  document.getElementById('inviteEmailTxt').textContent =
+    `Sending to: ${respondentEmail || c.respondent_name || 'Respondent'}`;
+
+  // Hero card
+  const typeMap = {
+    rental_deposit: '🏠 Rental Deposit', unpaid_salary: '💼 Unpaid Salary',
+    consumer_fraud: '🛒 Consumer Fraud', contract_breach: '📝 Contract Breach', other: '⚖️ Legal Dispute'
+  };
+  document.getElementById('typeTag').textContent       = typeMap[c.dispute_type] || c.dispute_type;
+  document.getElementById('heroSummary').textContent   = c.summary;
+  document.getElementById('heroLegal').textContent     = l.legal_summary;
+  document.getElementById('winPct').textContent        = a.win_probability + '%';
+  document.getElementById('confLevel').textContent     = a.confidence_level;
+
+  const sColors = { STRONG: 'text-green-400', MODERATE: 'text-yellow-300', WEAK: 'text-red-300' };
+  document.getElementById('heroStanding').innerHTML =
+    `Standing: <b class="${sColors[l.legal_standing] || ''}">${l.legal_standing}</b>`;
+  const recMap = {
+    NEGOTIATE: '🤝 Negotiate First', SEND_NOTICE: '📬 Send Formal Notice',
+    FILE_COMPLAINT: '📋 File Complaint', GO_TO_COURT: '⚖️ Go to Court'
+  };
+  document.getElementById('heroRec').textContent          = recMap[l.recommended_action] || l.recommended_action;
+  document.getElementById('heroJurisdiction').textContent = '📍 ' + (c.jurisdiction || 'General');
+
+  // Stats
+  document.getElementById('statClaim').textContent =
+    c.claim_amount ? sym + Number(c.claim_amount).toLocaleString() : 'N/A';
+  const t = a.timeline_estimate || {};
+  document.getElementById('statNegDays').textContent   = t.negotiation_days || 'N/A';
+  document.getElementById('statCourtTime').textContent =
+    t.if_court_months_min ? `${t.if_court_months_min}–${t.if_court_months_max}` : 'N/A';
+  const wEl = document.getElementById('statWorth');
+  wEl.textContent  = a.is_worth_going_to_court ? '✅ Yes' : '❌ No';
+  wEl.className    = 'text-xl font-bold ' + (a.is_worth_going_to_court ? 'text-green-600' : 'text-red-500');
+
+  // Laws
+  const lawsEl = document.getElementById('lawsList');
+  lawsEl.innerHTML = '';
+  (l.applicable_laws || []).forEach(law => {
+    const rc = { HIGH: 'bg-red-100 text-red-700', MEDIUM: 'bg-yellow-100 text-yellow-700', LOW: 'bg-slate-100 text-slate-500' };
+    const fc = { CLAIMANT: 'text-green-600', RESPONDENT: 'text-red-500', NEUTRAL: 'text-slate-500' };
+    lawsEl.innerHTML += `
+      <div class="border border-slate-100 rounded-xl p-3 hover:border-blue-200 transition">
+        <div class="flex justify-between items-start gap-2 mb-1">
+          <span class="text-sm font-semibold text-slate-800 leading-tight">${law.law_name}</span>
+          <span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${rc[law.relevance] || 'bg-slate-100 text-slate-500'}">${law.relevance}</span>
+        </div>
+        <p class="text-xs text-slate-500 mb-1.5 leading-relaxed">${law.description}</p>
+        <div class="flex gap-3 text-xs">
+          <span class="text-slate-400">📍 ${law.jurisdiction}</span>
+          <span class="font-semibold ${fc[law.favors] || 'text-slate-500'}">
+            ${law.favors === 'CLAIMANT' ? '↑ Favors You' : law.favors === 'RESPONDENT' ? '↓ Against You' : '→ Neutral'}
+          </span>
+        </div>
+      </div>`;
+  });
+
+  // Win bar
+  document.getElementById('winBarPct').textContent = a.win_probability + '%';
+  setTimeout(() => document.getElementById('winBar').style.width = a.win_probability + '%', 200);
+
+  // Analytics details
+  const costs = a.cost_estimate || {};
+  document.getElementById('analyticsRows').innerHTML = [
+    ['⏱ Negotiation',  t.negotiation_days ? t.negotiation_days + ' days' : 'N/A'],
+    ['📅 If Court',     t.if_court_months_min ? `${t.if_court_months_min}–${t.if_court_months_max} months` : 'N/A'],
+    ['💰 Court Total',  costs.total_if_court ? sym + Number(costs.total_if_court).toLocaleString() : 'N/A'],
+    ['📁 Filing Fee',   costs.court_filing_fee ? sym + Number(costs.court_filing_fee).toLocaleString() : 'N/A'],
+  ].map(([k, v]) => `
+    <div class="flex justify-between text-sm">
+      <span class="text-slate-500">${k}</span>
+      <span class="font-semibold text-slate-800">${v}</span>
+    </div>`).join('');
+
+  const sr = a.recommended_settlement_range || {};
+  if (sr.minimum || sr.optimal) {
+    document.getElementById('settlementBox').innerHTML = `
+      <div class="bg-green-50 border border-green-200 rounded-xl p-3 mt-3">
+        <div class="text-xs font-bold text-green-700 mb-1.5">💡 Recommended Settlement</div>
+        <div class="flex justify-between text-xs text-green-800">
+          <span>Min: <b>${sym}${Number(sr.minimum || 0).toLocaleString()}</b></span>
+          <span>Optimal: <b>${sym}${Number(sr.optimal || 0).toLocaleString()}</b></span>
+          <span>Max: <b>${sym}${Number(sr.maximum || 0).toLocaleString()}</b></span>
+        </div>
+      </div>`;
+  }
+
+  // Strengths / Risks / Rights
+  document.getElementById('strengthsList').innerHTML =
+    (a.strengthening_factors || []).map(s =>
+      `<div class="flex gap-2 text-xs"><span class="text-green-500 flex-shrink-0 mt-0.5">✓</span><span class="text-slate-600">${s}</span></div>`
+    ).join('');
+  document.getElementById('risksList').innerHTML =
+    (a.risk_factors || []).map(r =>
+      `<div class="flex gap-2 text-xs"><span class="text-red-400 flex-shrink-0 mt-0.5">✗</span><span class="text-slate-600">${r}</span></div>`
+    ).join('');
+  document.getElementById('rightsList').innerHTML =
+    (l.key_rights || []).map(r =>
+      `<div class="flex gap-2 text-xs"><span class="text-blue-500 flex-shrink-0 mt-0.5">🛡</span><span class="text-slate-600">${r}</span></div>`
+    ).join('');
+
+  // Setup negotiation
+  setupNegotiationSliders(c, a);
+  setRespondentStatus('not_invited');
+
+  document.getElementById('negClaimantName').textContent  = c.claimant_name  || 'You (Claimant)';
+  document.getElementById('negRespondentName').textContent = c.respondent_name || 'Respondent';
+}
+
+// ── Respondent status ─────────────────────────────────────────
+function setRespondentStatus(status) {
+  const box   = document.getElementById('respondentStatusBox');
+  const icon  = document.getElementById('respondentStatusIcon');
+  const title = document.getElementById('respondentStatusTitle');
+  const sub   = document.getElementById('respondentStatusSub');
+  const negBtn= document.getElementById('negBtn');
+
+  if (status === 'not_invited') {
+    box.className   = 'mb-5 rounded-xl p-4 border text-sm flex items-center gap-3 bg-slate-50 border-slate-200';
+    icon.textContent= '📧';
+    title.textContent = 'Invite not sent yet';
+    sub.textContent   = 'Go to the Analysis tab and click "Send Email Invite" first';
+    title.className = 'font-semibold text-slate-700';
+    negBtn.disabled = true;
+    negBtn.classList.add('opacity-50','cursor-not-allowed');
+  } else if (status === 'waiting') {
+    box.className   = 'mb-5 rounded-xl p-4 border text-sm flex items-center gap-3 bg-yellow-50 border-yellow-200';
+    icon.textContent= '⏳';
+    title.textContent = 'Waiting for respondent to submit their offer';
+    sub.textContent   = 'The other party received an email. Once they submit via their portal, click "Check Respondent Status" below';
+    title.className = 'font-semibold text-yellow-800';
+    negBtn.disabled = true;
+    negBtn.classList.add('opacity-50','cursor-not-allowed');
+    // Add check button
+    document.getElementById('negBtnNote').innerHTML =
+      `<button onclick="checkRespondentOffer()" class="text-blue-600 underline font-medium">🔄 Check if respondent has replied</button>`;
+  } else if (status === 'replied') {
+    box.className   = 'mb-5 rounded-xl p-4 border text-sm flex items-center gap-3 bg-green-50 border-green-200';
+    icon.textContent= '✅';
+    title.textContent = 'Respondent has submitted their offer!';
+    sub.textContent   = 'Both offers are in — the AI mediator is ready to propose a fair settlement';
+    title.className = 'font-semibold text-green-800';
+    negBtn.disabled = false;
+    negBtn.classList.remove('opacity-50','cursor-not-allowed');
+    document.getElementById('negBtnNote').textContent =
+      'The AI mediator will evaluate both real offers and propose a settlement';
+  }
+}
+
+// ── Check if respondent has replied ──────────────────────────
+async function checkRespondentOffer() {
+  if (!state.caseId) return;
+  try {
+    const res  = await fetch(`${API}/api/case/${state.caseId}`);
+    const data = await res.json();
+    const ro   = data.case_data?.respondent_offer;
+    if (ro !== null && ro !== undefined) {
+      state.respondentOffer = ro;
+      const sym = window._sym || '₹';
+      // Show respondent offer
+      document.getElementById('respondentOfferDisplay').classList.remove('hidden');
+      document.getElementById('respondentOfferAmt').textContent = sym + Number(ro).toLocaleString();
+      setRespondentStatus('replied');
+    } else {
+      alert("The respondent hasn't submitted their offer yet. Ask them to check their email and use the link provided.");
+    }
+  } catch(e) {
+    alert('Could not check status: ' + e.message);
+  }
+}
+
+// ── Negotiation sliders ───────────────────────────────────────
+function setupNegotiationSliders(c, a) {
+  const claim = Number(c.claim_amount) || 10000;
+  const sr    = a.recommended_settlement_range || {};
+  const sym   = window._sym || '₹';
+
+  const cs = document.getElementById('claimantSlider');
+  cs.min   = Math.round(claim * 0.3);
+  cs.max   = Math.round(claim * 1.2);
+  cs.value = sr.optimal || claim;
+  cs.step  = Math.max(100, Math.round(claim * 0.01));
+
+  document.getElementById('cSliderMin').textContent = sym + Number(cs.min).toLocaleString();
+  document.getElementById('cSliderMax').textContent = sym + Number(cs.max).toLocaleString();
+  updateSliders();
+}
+
+function updateSliders() {
+  const sym = window._sym || '₹';
+  const cv  = Number(document.getElementById('claimantSlider').value);
+  document.getElementById('claimantOfferDisplay').textContent = sym + cv.toLocaleString();
+}
+
+// ── Submit negotiation ────────────────────────────────────────
+async function submitNegotiation() {
+  if (state.roundsUsed >= 3) return;
+
+  const cv  = Number(document.getElementById('claimantSlider').value);
+  const btn = document.getElementById('negBtn');
+  btn.textContent = '⏳ AI Mediator Analyzing...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/negotiate`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ case_id: state.caseId, claimant_offer: cv })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail); }
+    const data = await res.json();
+
+    state.roundsUsed = data.round;
+    state.history    = data.history;
+
+    renderNegotiationRound(data, cv, data.respondent_offer);
+
+    if (data.result.next_step === 'RECOMMEND_SETTLEMENT' || data.result.likely_to_settle) {
+      state.settledAmount = data.result.ai_proposed_amount;
+      showSettled(data.result.ai_proposed_amount);
+    } else if (data.rounds_remaining === 0) {
+      showEscalate();
+    } else {
+      btn.textContent = `Submit Round ${state.roundsUsed + 1} →`;
+      btn.disabled    = false;
+      updateRoundDots();
+    }
+  } catch(err) {
+    btn.textContent = 'Submit to AI Mediator →';
+    btn.disabled    = false;
+    alert('Error: ' + err.message);
+  }
+}
+
+function renderNegotiationRound(data, cv, rv) {
+  const sym = window._sym || '₹';
+  const r   = data.result;
+  const div = document.createElement('div');
+  div.className = 'bg-white rounded-2xl shadow-card p-6 round-card slide-up';
+  div.innerHTML = `
+    <div class="flex items-center justify-between mb-5">
+      <h4 class="font-bold text-slate-800 text-lg">Round ${data.round} — AI Mediation Result</h4>
+      <span class="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">${data.rounds_remaining} rounds remaining</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 mb-5">
+      <div class="neg-claimant rounded-xl p-4 text-center">
+        <div class="text-xs font-semibold text-blue-600 mb-1">Your Offer</div>
+        <div class="text-xl font-bold text-blue-800">${sym}${Number(cv).toLocaleString()}</div>
+        <div class="text-xs text-blue-500 mt-1 font-medium bg-blue-100 rounded-full px-2 py-0.5 inline-block">${r.claimant_position}</div>
+      </div>
+      <div class="neg-ai rounded-xl p-4 text-center border-2 border-purple-300">
+        <div class="text-xs font-semibold text-purple-600 mb-1">🤖 AI Proposes</div>
+        <div class="text-xl font-bold text-purple-800">${sym}${Number(r.ai_proposed_amount).toLocaleString()}</div>
+        <div class="text-xs text-purple-500 mt-1 font-medium">Fair Settlement</div>
+      </div>
+      <div class="neg-respondent rounded-xl p-4 text-center">
+        <div class="text-xs font-semibold text-green-600 mb-1">Respondent's Offer</div>
+        <div class="text-xl font-bold text-green-800">${sym}${Number(rv).toLocaleString()}</div>
+        <div class="text-xs text-green-500 mt-1 font-medium bg-green-100 rounded-full px-2 py-0.5 inline-block">${r.respondent_position}</div>
+      </div>
+    </div>
+
+    <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4">
+      <div class="text-xs font-bold text-purple-700 mb-1.5">🤖 AI Mediator Says</div>
+      <p class="text-sm text-purple-800 leading-relaxed">${r.mediator_message}</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-3">
+      <div class="bg-blue-50 rounded-xl p-3">
+        <div class="text-xs font-bold text-blue-700 mb-1">To You (Claimant)</div>
+        <p class="text-xs text-blue-800 leading-relaxed">${r.pressure_on_claimant}</p>
+      </div>
+      <div class="bg-red-50 rounded-xl p-3">
+        <div class="text-xs font-bold text-red-700 mb-1">To Respondent</div>
+        <p class="text-xs text-red-800 leading-relaxed">${r.pressure_on_respondent}</p>
+      </div>
+    </div>
+
+    <div class="bg-slate-50 rounded-xl p-3">
+      <p class="text-xs text-slate-600"><b>Gap Analysis:</b> ${r.gap_analysis}</p>
+    </div>`;
+  document.getElementById('negHistory').appendChild(div);
+  document.getElementById('roundCounter').classList.remove('hidden');
+  updateRoundDots();
+  div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function updateRoundDots() {
+  document.getElementById('roundDots').innerHTML =
+    [1, 2, 3].map(i =>
+      `<div class="w-3 h-3 rounded-full ${i <= state.roundsUsed ? 'bg-blue-600' : 'bg-slate-200'}"></div>`
+    ).join('');
+}
+
+function showSettled(amount) {
+  const sym = window._sym || '₹';
+  document.getElementById('settledAmountTxt').textContent = `Settled at ${sym}${Number(amount).toLocaleString()}`;
+  document.getElementById('settledBanner').classList.remove('hidden');
+  document.getElementById('negIntro').classList.add('hidden');
+  state.settled = true;
+  document.getElementById('settledBanner').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showEscalate() {
+  document.getElementById('escalateBanner').classList.remove('hidden');
+  document.getElementById('negIntro').classList.add('hidden');
+  document.getElementById('escalateBanner').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Generate settlement ───────────────────────────────────────
+async function generateSettlement() {
+  const btn = document.getElementById('settlementBtn');
+  btn.textContent = '⏳ Generating & Emailing...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/settle`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ case_id: state.caseId, settled_amount: state.settledAmount })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail); }
+
+    btn.textContent = '✅ Agreement Emailed to Both Parties — Download';
+    btn.onclick     = downloadSettlement;
+    btn.disabled    = false;
+    document.getElementById('settlementDocCard').classList.remove('hidden');
+
+  } catch(err) {
+    btn.textContent = '📄 Generate & Email Settlement Agreement';
+    btn.disabled    = false;
+    alert('Error: ' + err.message);
+  }
+}
+
+// ── Downloads ─────────────────────────────────────────────────
+function downloadDemand() {
+  if (state.caseId) window.open(`${API}/api/download/${state.caseId}`, '_blank');
+}
+function downloadSettlement() {
+  if (state.caseId) window.open(`${API}/api/download-settlement/${state.caseId}`, '_blank');
+}
+</script>
+</body>
+</html>
