@@ -23,7 +23,7 @@ from backend.agents.negotiation_agent import run_negotiation_round
 from backend.services.db_service      import create_case, get_case, update_case, get_cases_by_email
 from backend.services.email_service   import send_email
 
-BASE_URL = os.environ.get("BASE_URL", "https://sectional-hermina-ungamboling.ngrok-free.dev")
+BASE_URL = os.environ.get("BASE_URL", "https://nocourt-1.onrender.com")
 
 app = FastAPI(title="LegalAI Resolver")
 app.add_middleware(
