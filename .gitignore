@@ -1,16 +1,8 @@
-# Python virtual environment
-venv/
-env/
-
-# Environment variables
 .env
-
-# Python cache
+venv/
 __pycache__/
 *.pyc
-
-# system files
-.DS_Store
-
-# logs
+legal_resolver.db
+outputs/
+ngrok.exe
 *.log

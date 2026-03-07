@@ -78,11 +78,10 @@ class HistoryInput(BaseModel):
 # HTML PAGES
 # ══════════════════════════════════════════════════════════════
 def _read_html(filename: str) -> str:
-    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    base = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(base, "frontend", filename)
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
-
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
@@ -97,6 +96,7 @@ def serve_respond(case_id: str):
 # ══════════════════════════════════════════════════════════════
 # ANALYZE  (runs 4 agents)
 # ══════════════════════════════════════════════════════════════
+OUTPUTS_DIR = os.environ.get("OUTPUTS_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs"))
 @app.post("/api/analyze")
 async def analyze_dispute(inp: DisputeInput):
     case_id = uuid.uuid4().hex[:8].upper()
@@ -119,7 +119,7 @@ async def analyze_dispute(inp: DisputeInput):
 
     # Agent 4 — Documents (demand letter + court file generated upfront)
     print(f"[{case_id}] Document Agent...")
-    os.makedirs("outputs", exist_ok=True)
+    os.makedirs(OUTPUTS_DIR, exist_ok=True)
 
     try:
         generate_demand_letter_pdf(case_id, case_data, legal_data, analytics_data)
@@ -513,7 +513,7 @@ def settle(inp: SettleInput):
 # ══════════════════════════════════════════════════════════════
 @app.get("/api/download/{case_id}")
 def download_demand(case_id: str):
-    path = f"outputs/demand_letter_{case_id}.pdf"
+    path = os.path.join(OUTPUTS_DIR, f"demand_letter_{case_id}.pdf")
     if not os.path.exists(path):
         case = get_case(case_id)
         if not case:
@@ -531,7 +531,7 @@ def download_demand(case_id: str):
 
 @app.get("/api/download-settlement/{case_id}")
 def download_settlement_pdf(case_id: str):
-    path = f"outputs/settlement_{case_id}.pdf"
+    path = os.path.join(OUTPUTS_DIR, f"settlement_{case_id}.pdf")
     if not os.path.exists(path):
         raise HTTPException(404, "Settlement PDF not found. Case may not be settled yet.")
     return FileResponse(path, media_type="application/pdf",
@@ -540,7 +540,7 @@ def download_settlement_pdf(case_id: str):
 
 @app.get("/api/download-court-file/{case_id}")
 def download_court_file(case_id: str):
-    path = f"outputs/court_file_{case_id}.pdf"
+    path = os.path.join(OUTPUTS_DIR, f"court_file_{case_id}.pdf")
     if not os.path.exists(path):
         case = get_case(case_id)
         if not case:

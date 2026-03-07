@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: legalai-resolver
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BASE_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: AZURE_COMM_CONNECTION_STRING
+        sync: false
+      - key: AZURE_SENDER_EMAIL
+        sync: false
+    disk:
+      name: legalai-data
+      mountPath: /data
+      sizeGB: 1

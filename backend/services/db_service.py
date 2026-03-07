@@ -2,7 +2,9 @@ import sqlite3
 import json
 from datetime import datetime
 
-DB_PATH = "legal_resolver.db"
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.environ.get("DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "legal_resolver.db"))
 
 
 def init_db():
