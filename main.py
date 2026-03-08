@@ -176,7 +176,8 @@ def send_invite(inp: SendInviteInput):
 
     cd  = case["case_data"]
     c   = cd.get("case", {})
-    sym = "Rs." if c.get("currency") == "INR" else ("$" if c.get("currency") == "USD" else (c.get("currency", "") + " "))
+
+    sym = "Rs." if c.get("currency") == "INR" else ("$" if c.get("currency") == "USD" else ((c.get("currency") or "") + " "))
 
     amount_str = (
         f"{sym}{int(float(c.get('claim_amount') or 0)):,}"
@@ -314,7 +315,7 @@ def respondent_offer(inp: RespondentOfferInput):
 
     c      = cd.get("case", {})
     is_mon = c.get("is_monetary", True)
-    sym    = "Rs." if c.get("currency") == "INR" else ("$" if c.get("currency") == "USD" else (c.get("currency", "") + " "))
+    sym    = "Rs." if c.get("currency") == "INR" else ("$" if c.get("currency") == "USD" else ((c.get("currency") or "") + " "))
     offer_display = (
         f"{sym}{int(inp.respondent_offer):,}"
         if is_mon
@@ -569,10 +570,8 @@ def get_case_detail(case_id: str):
 # ══════════════════════════════════════════════════════════════
 
 def _sym(case_data: dict) -> str:
-    """Currency symbol safe for email HTML (no ReportLab involvement here)."""
-    cur = case_data.get("currency", "")
+    cur = case_data.get("currency") or ""
     return {"INR": "Rs.", "USD": "$", "GBP": "GBP ", "EUR": "EUR "}.get(cur, cur + " " if cur else "")
-
 
 def _finalize_settlement(case: dict, cd: dict, case_id: str, settled_amount: float):
     """
